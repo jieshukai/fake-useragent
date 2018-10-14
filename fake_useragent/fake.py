@@ -11,13 +11,18 @@ from fake_useragent.utils import load, load_cached, str_types, update
 
 
 class FakeUserAgent(object):
+    """
+    修改:
+        verify_ssl = False
+        use_cache_server = False,
+    """
     def __init__(
         self,
         cache=True,
-        use_cache_server=True,
+        use_cache_server=False,
         path=settings.DB,
         fallback=None,
-        verify_ssl=True,
+        verify_ssl=False,
         safe_attrs=tuple(),
     ):
         assert isinstance(cache, bool), \
@@ -148,3 +153,7 @@ class FakeUserAgent(object):
 
 # common alias
 UserAgent = FakeUserAgent
+
+if __name__ == '__main__':
+    ua = UserAgent()
+    print(ua.random)

@@ -2,12 +2,13 @@
 from __future__ import absolute_import, unicode_literals
 
 import os
-import tempfile
+
+import requests
 
 __version__ = '0.1.11'
-
+# 修改 默认DB: 当前文件夹下
 DB = os.path.join(
-    tempfile.gettempdir(),
+    os.path.realpath('./'),
     'fake_useragent_{version}.json'.format(
         version=__version__,
     ),
@@ -48,3 +49,15 @@ HTTP_TIMEOUT = 5
 HTTP_RETRIES = 2
 
 HTTP_DELAY = 0.1
+
+if __name__ == '__main__':
+    # 爬取服务器上fake_useragent.json 写入本地
+    response = requests.get(CACHE_SERVER)
+    if response.status_code == 200:
+        with open(DB, 'w') as f:
+            f.write(response.text)
+            print('写入成功', response.status_code)
+            print(DB)
+    else:
+        print('写入失败', response.status_code)
+        print('写入失败,请升级fake-useragent','pip install -U fake-useragent')
